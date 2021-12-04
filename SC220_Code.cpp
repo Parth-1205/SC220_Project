@@ -8,6 +8,8 @@ using namespace std;
 #define ll long long int
 #define endl "\n"
 
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+
 //Forward declaration of functions.
 int minSwapfor_A(int , string);
 int minSwapfor_B(int , string);
@@ -27,7 +29,7 @@ void find_neighbouring_Node(vector<tuple<string, int, int>> &neighbour_Node, str
             minSwap_B = minSwapfor_B(n,permutation);
             neighbour_Node.push_back({permutation, minSwap_A, minSwap_B});
             
-            swap(permutation[i],permutation[j]);    //Restore Current Permutation
+            swap(permutation[i],permutation[j]);        //Restore Current Permutation
         }
     }
 }
@@ -172,6 +174,8 @@ int main()
             find_neighbouring_Node(neighbouring_Node, current); 
 
             //Traverse all Neighbouring Node of current Node.
+                                                                /*cout << "Before : ";
+                                                                debug1(neighbouring_Node.size());*/
             for (auto itr = neighbouring_Node.begin(); itr < neighbouring_Node.end(); itr++)
             {
                 //if Node is already visited than we remove it from neighbouring_Node because player can't choose that Node.
@@ -181,7 +185,8 @@ int main()
                     itr--;
                 }
             }
-
+                                                                /*cout << "After : ";
+                                                                 debug1(neighbouring_Node.size());*/
             if (play_A)         //if play_A is true than it is player A's turn.
             {
                 if (neighbouring_Node.size() > 0)
@@ -199,7 +204,6 @@ int main()
                     int index = neighbouring_Node.size() - 1;
                     for (int i = 0; i < neighbouring_Node.size(); i++)
                     {
-
                         if (get<1>(neighbouring_Node[i]) == 0)
                         {
                             index = i;
@@ -237,7 +241,6 @@ int main()
                     int index = neighbouring_Node.size() - 1;
                     for (int i = 0; i < neighbouring_Node.size(); i++)
                     {
-
                         if (get<2>(neighbouring_Node[i]) == 0)
                         {
                             index = i;
@@ -266,29 +269,49 @@ int main()
 
         }
     }
-
-    if (win_A)
+    
+    int x;
+    cout << "For Knowing Winner of a Game Enter 1 . " << endl;
+    cout << "For Knowing Winner of a Game along With their Strategy (Path) Enter 2 ." << endl;
+    cout << "Enter The Value : " << endl;
+    cin >> x;
+    switch(x)
     {
-        cout << "|| Winner : A ||" << endl << endl;
-        cout << "Starting Permutation : "<<get<0>(path[0]) << "\t MinSwapfor_A : " << get<1>(path[0]) << "\t MinSwapfor_B : " << get<2>(path[0]) << " " << endl;
-        cout << endl;
-        for (int i = 1; i < path.size(); i++)
+        case 1 :
+        if(win_A) 
         {
-            (i%2) ? cout << "A choose " : cout << "B choose ";
-            cout <<"Permutation : " << get<0>(path[i]) << "\t MinSwapfor_A : " << get<1>(path[i]) << "\t MinSwapfor_B : " << get<2>(path[i]) << " " << endl;
-            cout << endl;
+            cout << "|| Winner : A ||" << endl;
         }
-    }
-    else
-    {
-        cout << "|| Winner : B ||" << endl << endl;
-        cout << "Starting Permutation : "<<get<0>(path[0]) << "\t MinSwapfor_A : " << get<1>(path[0]) << "\t MinSwapfor_B : " << get<2>(path[0]) << " " << endl;
-        cout << endl;
-        for (int i = 1; i < path.size(); i++)
+        else 
         {
-            (i%2) ? cout << "A choose " : cout << "B choose ";
-            cout <<"Permutation : " << get<0>(path[i]) << "\t MinSwapfor_A : " << get<1>(path[i]) << "\t MinSwapfor_B : " << get<2>(path[i]) << " " << endl;
+            cout << "Winner : B ||" << endl;
+        }
+        break;
+
+        case 2 : 
+        if (win_A)
+        {
+            cout << "|| Winner : A ||" << endl << endl;
+            cout << "Starting Permutation : "<<get<0>(path[0]) << "\t MinSwapfor_A : " << get<1>(path[0]) << "\t MinSwapfor_B : " << get<2>(path[0]) << " " << endl;
             cout << endl;
+            for (int i = 1; i < path.size(); i++)
+            {
+                (i%2) ? cout << "A choose " : cout << "B choose ";
+                cout <<"Permutation : " << get<0>(path[i]) << "\t MinSwapfor_A : " << get<1>(path[i]) << "\t MinSwapfor_B : " << get<2>(path[i]) << " " << endl;
+                cout << endl;
+            }
+        }
+        else
+        {
+            cout << "|| Winner : B ||" << endl << endl;
+            cout << "Starting Permutation : "<<get<0>(path[0]) << "\t MinSwapfor_A : " << get<1>(path[0]) << "\t MinSwapfor_B : " << get<2>(path[0]) << " " << endl;
+            cout << endl;
+            for (int i = 1; i < path.size(); i++)
+            {
+                (i%2) ? cout << "A choose " : cout << "B choose ";
+                cout <<"Permutation : " << get<0>(path[i]) << "\t MinSwapfor_A : " << get<1>(path[i]) << "\t MinSwapfor_B : " << get<2>(path[i]) << " " << endl;
+                cout << endl;
+            }
         }
     }
 }
